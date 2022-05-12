@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">pws</string>
+    <string name="title_activity_main">pws</string>
+    <string name="package_name">app.netserve.pws</string>
+    <string name="custom_url_scheme">app.netserve.pws</string>
+</resources>

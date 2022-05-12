@@ -10,21 +10,23 @@
       LogOut
     </button>
 
-    <Dialog
-      button-name="About Me"
-      title="About Me"
-      description="Hello there, this is Sushil Kamble. I have created a
-      authetication demo using Vue 3, Firebase 9 and Tailwind. Features included are sign up 
-      form validation, navigation guard, firestore read and write demo, page transition,
-      and this reuseable modal."
-      :icon="['fas', 'info-circle']"
-    />
+    <div>
+      <h1>Geolocation</h1>
+      <p>Your location is:</p>
+      <p>Latitude: {{ loc.lat }}</p>
+      <p>Longitude: {{ loc.long }}</p>
+
+      <button @click="getCurrentPosition">
+        Get Current Location
+      </button>
+    </div>
   </section>
 </template>
 
 <script>
 import { useAuthState, useSignOut } from "@/firebase";
 import { useRouter } from "vue-router";
+import { Geolocation } from '@capacitor/geolocation';
 import { defineComponent, ref } from "vue";
 import Dialog from "@/components/Dialog.vue";
 import Loading from "@/components/Loading.vue";
@@ -41,6 +43,19 @@ export default defineComponent({
 
     const loading = ref(false);
 
+    const loc = ref({
+      lat: null,
+      long: null,
+    });
+
+    const getCurrentPosition = async () => {
+      const pos = await Geolocation.getCurrentPosition();
+      loc.value = {
+        lat: pos.coords.latitude,
+        long: pos.coords.longitude,
+      };
+    };
+
     const signOutUser = async () => {
       loading.value = true;
       await useSignOut();
@@ -48,7 +63,7 @@ export default defineComponent({
       loading.value = false;
     };
 
-    return { user, signOutUser, loading };
+    return { user, signOutUser, loading, loc, getCurrentPosition };
   },
 });
 </script>
