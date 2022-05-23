@@ -1,8 +1,8 @@
 <template>
-  <div class="bg-secondary">
+  <div class="bg-white text-primary">
     <h2 class="text-center py-1">
-      Created by
-      <a href="https://www.sushilkamble.me/" target="_blank">@sushil-kamble</a>
+      &copy;
+      <a href="https://www.pilaniwaterservice.com/" target="_blank">Pilani Water Services</a>
     </h2>
   </div>
 </template>

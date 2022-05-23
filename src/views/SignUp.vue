@@ -80,7 +80,7 @@
         </p>
       </div>
       <div class="flex justify-between items-center">
-        <button type="submit" class="t-btn inline-flex items-center bg-primary">
+        <button type="submit" class="t-btn inline-flex items-center bg-primary text-secondary">
           <Loading class="h-5 w-5" v-if="loading" />
           <font-awesome-icon :icon="['fas', 'user-plus']" class="mr-2" v-else />
           Sign Up
@@ -91,8 +91,16 @@
             Login
           </router-link>
         </h5>
+        
       </div>
-
+      <div><button
+        type="button"
+        @click="googleSignUp"
+        class="mt-4 t-btn w-full inline-flex items-center bg-primary text-white"
+      >
+        <font-awesome-icon :icon="['fab', 'google']" class="mr-2" />
+        Sign up with Google
+      </button></div>
       <div v-if="error.length > 0" class="mt-4 p-4 bg-error rounded">
         {{ error }}
       </div>
@@ -105,6 +113,8 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   updateProfile,
+  signInWithPopup,
+  GoogleAuthProvider,
 } from "firebase/auth";
 import { useRouter } from "vue-router";
 import { reactive, toRefs, computed, ref } from "vue";
@@ -172,6 +182,18 @@ export default {
       loading.value = false;
     };
 
+    const googleSignUp = async () => {
+      const provider = new GoogleAuthProvider();
+      const auth = getAuth();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        GoogleAuthProvider.credentialFromResult(result);
+        router.replace({ name: "Profile" });
+      } catch (e) {
+        error.value = e.message;
+      }
+    };
+
     return {
       showPassword,
       ...toRefs(state),
@@ -180,6 +202,7 @@ export default {
       handleSubmit,
       loading,
       error,
+      googleSignUp,
     };
   },
 };

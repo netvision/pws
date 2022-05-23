@@ -26,10 +26,22 @@ const routes = [
     meta: { noAuth: true }
   },
   {
+    path: "/auth/signup-phone",
+    name: "SignUpPhone",
+    component: () => import("@/views/SignUpPhone.vue"),
+    meta: { noAuth: true }
+  },
+  {
     path: "/auth/forgot-password",
     name: "ForgotPassword",
     component: () => import("@/views/ForgotPassword.vue"),
     meta: { noAuth: true }
+  },
+  {
+    path: "/book",
+    name: "Book",
+    component: () => import("@/views/Book.vue"),
+    
   },
   {
     path: "/database",

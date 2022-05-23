@@ -1,24 +1,18 @@
 <template>
   <nav class="t-transition-effect nav-style px-2 md:px-0">
     <div class="t-main-set flex justify-between items-center">
-      <h1 class="font-bold text-primary cursor-pointer" @click="goToHome">
-        My App
+      <h1 class="font-bold text-secondary cursor-pointer" @click="goToHome">
+        PWS
       </h1>
       <div class="hidden md:block" v-if="user">
-        <router-link :to="{ name: 'Home' }" class="nav-link t-transition-effect"
-          >Home
-        </router-link>
+        <router-link :to="{ name: 'Home' }" class="nav-link t-transition-effect">Home</router-link>
         <router-link
-          :to="{ name: 'Profile' }"
+          :to="{ name: 'Book' }"
           class="nav-link t-transition-effect"
         >
-          Profile
+          Book
         </router-link>
-        <router-link
-          :to="{ name: 'Database' }"
-          class="nav-link t-transition-effect"
-          >Database
-        </router-link>
+        <router-link :to="{ name: 'Profile' }" class="nav-link t-transition-effect">Profile</router-link>
         <a
           class="
             t-transition-effect
@@ -38,6 +32,12 @@
       <div class="hidden md:block" v-else>
         <router-link :to="{ name: 'Home' }" class="nav-link t-transition-effect"
           >Home
+        </router-link>
+        <router-link
+          :to="{ name: 'Book' }"
+          class="nav-link t-transition-effect"
+        >
+          Book
         </router-link>
         <router-link
           :to="{ name: 'Login' }"
@@ -84,8 +84,8 @@ export default defineComponent({
 <style lang="postcss" scoped>
 .nav-style {
   @apply py-4 px-2 top-0 z-10 sticky
-  shadow-md bg-black
-  bg-opacity-20
+  shadow-sm bg-blue-800
+  bg-opacity-100
   backdrop-filter backdrop-blur-sm;
 }
 .nav-link {

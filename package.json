@@ -18,7 +18,9 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
     "@headlessui/vue": "^1.4.2",
+    "axios": "^0.27.2",
     "firebase": "^9.1.2",
+    "geocode-to-pincode": "^1.0.2",
     "vue": "^3.2.31",
     "vue-router": "4"
   },

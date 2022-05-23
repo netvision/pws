@@ -9,8 +9,8 @@ module.exports = {
         text: ["Ubuntu", "sans-serif"]
       },
       colors: {
-        primary: colors.sky["500"],
-        secondary: colors.slate["700"],
+        primary: colors.sky["700"],
+        secondary: colors.lime["100"],
         error: colors.red["500"]
       }
     }

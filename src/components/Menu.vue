@@ -64,8 +64,7 @@ export default defineComponent({
     const { isAuthenticated } = useAuthState();
     const menuAuth = [
       { name: "Home", link: { name: "Home" } },
-      { name: "Profile", link: { name: "Profile" } },
-      { name: "Database", link: { name: "Database" } },
+      { name: "Profile", link: { name: "Profile" } }
     ];
     const menuNoAuth = [
       { name: "Home", link: { name: "Home" } },

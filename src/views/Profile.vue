@@ -9,62 +9,46 @@
       <font-awesome-icon :icon="['fas', 'sign-out-alt']" class="mr-2" v-else />
       LogOut
     </button>
-
+    <button @click="getPincode" class="text-black">Pin</button>
     <div>
-      <h1>Geolocation</h1>
-      <p>Your location is:</p>
-      <p>Latitude: {{ loc.lat }}</p>
-      <p>Longitude: {{ loc.long }}</p>
-
-      <button @click="getCurrentPosition">
-        Get Current Location
-      </button>
+    <pre class="text-black">
+    Pincode: {{pin}}
+    </pre>
+    
     </div>
   </section>
 </template>
 
-<script>
+<script setup>
 import { useAuthState, useSignOut } from "@/firebase";
 import { useRouter } from "vue-router";
+import { ref } from "vue";
 import { Geolocation } from '@capacitor/geolocation';
-import { defineComponent, ref } from "vue";
-import Dialog from "@/components/Dialog.vue";
+import axios from 'axios';
 import Loading from "@/components/Loading.vue";
+const { user } = useAuthState();
+const router = useRouter();
 
-export default defineComponent({
-  name: "Home",
-  components: {
-    Dialog,
-    Loading,
-  },
-  setup() {
-    const { user } = useAuthState();
-    const router = useRouter();
+const loading = ref(false);
+const address = ref('')
+const pin = ref([])
 
-    const loading = ref(false);
+const signOutUser = async () => {
+  loading.value = true;
+  await useSignOut();
+  await router.replace({ name: "Login" });
+  loading.value = false;
+};
+// AIzaSyDG9I2B0BJsIx9gtd7Hw9_9_0QA4xtBHnw
+const getPincode = async() => {
+  let coordinates = await Geolocation.getCurrentPosition();
+  let add = await axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+coordinates.coords.latitude+','+coordinates.coords.longitude+'&result_type=route&key=AIzaSyDG9I2B0BJsIx9gtd7Hw9_9_0QA4xtBHnw').then(r => r.data)
+  address.value = add.results[0]
 
-    const loc = ref({
-      lat: null,
-      long: null,
-    });
+  let data = address.value.address_components.filter(a => a.types.includes("postal_code"))
 
-    const getCurrentPosition = async () => {
-      const pos = await Geolocation.getCurrentPosition();
-      loc.value = {
-        lat: pos.coords.latitude,
-        long: pos.coords.longitude,
-      };
-    };
-
-    const signOutUser = async () => {
-      loading.value = true;
-      await useSignOut();
-      await router.replace({ name: "Login" });
-      loading.value = false;
-    };
-
-    return { user, signOutUser, loading, loc, getCurrentPosition };
-  },
-});
+  pin.value = data[0].short_name
+  //let pin = geocodeToPincode({lat: coordinates.coords.latitude, lng: coordinates.coords.longitude, key: 'AIzaSyDG9I2B0BJsIx9gtd7Hw9_9_0QA4xtBHnw'})
+  //console.log(pin)
+}
 </script>
-
