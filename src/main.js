@@ -13,7 +13,8 @@ import {
   faInfoCircle,
   faEye,
   faEyeSlash,
-  faPhone
+  faPhone,
+  faPen
 } from "@fortawesome/free-solid-svg-icons";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
@@ -33,7 +34,8 @@ library.add([
   faInfoCircle,
   faEye,
   faEyeSlash,
-  faPhone
+  faPhone,
+  faPen
 ]);
 
 createApp(App)
