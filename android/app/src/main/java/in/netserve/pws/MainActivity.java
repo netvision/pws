@@ -1,4 +1,4 @@
-package app.netserve.pws;
+package in.netserve.pws;
 
 import com.getcapacitor.BridgeActivity;
 

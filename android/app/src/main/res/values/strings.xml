@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">pws</string>
     <string name="title_activity_main">pws</string>
-    <string name="package_name">app.netserve.pws</string>
-    <string name="custom_url_scheme">app.netserve.pws</string>
+    <string name="package_name">in.netserve.pws</string>
+    <string name="custom_url_scheme">in.netserve.pws</string>
 </resources>

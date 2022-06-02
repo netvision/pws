@@ -62,7 +62,7 @@
       </div>
       <button
         type="button"
-        @click="googleSignUp"
+        @click="googleSignIn"
         class="mt-4 t-btn w-full inline-flex items-center bg-primary text-white"
       >
         <font-awesome-icon :icon="['fab', 'google']" class="mr-2" />
@@ -87,8 +87,9 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
+import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import Loading from "@/components/Loading.vue";
 import Dialog from "@/components/Dialog.vue";
 import { isValidEmail } from "@/helpers";
@@ -99,9 +100,12 @@ export default {
     Dialog,
   },
   setup() {
+
+
     const auth = getAuth();
     const router = useRouter();
     const showPassword = ref(false);
+
 
     const loading = ref(false);
     const error = ref("");
@@ -126,6 +130,16 @@ export default {
       loading.value = false;
     };
 
+    const googleSignIn = async() => {
+      try{ 
+        await FirebaseAuthentication.signInWithGoogle();
+        await router.replace({ name: "Profile" });
+      }
+      catch(e){
+        console.log(e)
+      }
+    }
+
     const googleSignUp = async () => {
       const provider = new GoogleAuthProvider();
       const auth = getAuth();
@@ -137,7 +151,7 @@ export default {
         error.value = e.message;
       }
     };
-    return { showPassword, handleSubmit, googleSignUp, error, loading };
+    return { showPassword, handleSubmit, googleSignUp, error, loading, googleSignIn };
   },
 };
 </script>

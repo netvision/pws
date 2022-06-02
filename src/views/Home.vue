@@ -15,7 +15,6 @@ import { useAuthState } from "@/firebase";
 
 const { user } = useAuthState();
 
-console.log(user)
 </script>
 <style lang="postcss" scoped>
 code {

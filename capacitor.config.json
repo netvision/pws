@@ -1,5 +1,5 @@
 {
-  "appId": "app.netserve.pws",
+  "appId": "in.netserve.pws",
   "appName": "pws",
   "webDir": "dist",
   "bundledWebRuntime": false

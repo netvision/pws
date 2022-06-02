@@ -2,7 +2,7 @@
   <section class="p-4 bg-secondary w-full text-primary">
     <h1>Welcome, {{ user?.displayName }}</h1>
     <div class="mt-8" v-if="phone">
-    <p>Your Default verified Mobile No. is: {{phone.phone_no}} <button @click="changePhone">&nbsp;<font-awesome-icon :icon="['fas', 'pen']" class="mr-1" /></button></p>
+      <p>Your Default verified Mobile No. is: {{phone.phone_no}} <button @click="changePhone">&nbsp;<font-awesome-icon :icon="['fas', 'pen']" class="mr-1" /></button></p>
     </div>
     <div class="mb-4 flex" v-if="editPhone">
       <div class="md:basis-1/2">
@@ -37,14 +37,14 @@
         <button @click="sendOtp" class="text-white bg-blue-700 m-4 t-btn inline-flex items-center">Send OTP</button>
       </div>
     </div>
-    <button @click="getPincode" class="text-white bg-blue-700 m-4 t-btn inline-flex items-center">Get Address</button>
-    <div>
-    <pre class="text-black">
-    Address: {{address}}
-    </pre>
-    <pre class="text-black">
-    Pincode: {{pin}}
-    </pre>
+    
+    <div v-if="orders">
+    <h3 class="font-medium leading-tight text-3xl mt-3 mb-2 text-blue-600">Recent Orders</h3>
+    <ul class="list-decimal ml-6 rounded-lg border border-gray-200 w-full text-gray-900">
+      <li v-for="order in orders" :key="order.id" class="px-6 py-2 border-b border-gray-200 w-full">
+        {{order.requested_at}} <br /> {{order.address}}
+      </li>
+    </ul>
     </div>
   </section>
 </template>
@@ -67,6 +67,7 @@ const otp = ref()
 const otpv = ref()
 const showOtpInput = ref(false)
 const editPhone = ref(false)
+const orders = ref()
 
 const sendOtp = async() => {
   if(newphone.value.toString().length === 10){
@@ -133,6 +134,10 @@ onUpdated(async() => {
     let data = await axios.get('https://droplet.netserve.in/pws-phone?uid='+user.value.uid).then(r => r.data)
     if(data && data[0]) phone.value = data[0]
     else editPhone.value = true
+  }
+
+  if(!orders.value){
+    orders.value = await axios.get('https://droplet.netserve.in/pws-order?user_uid='+user.value.uid).then(r => r.data)
   }
 })
 </script>
