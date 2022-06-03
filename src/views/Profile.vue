@@ -68,13 +68,13 @@ const otpv = ref()
 const showOtpInput = ref(false)
 const editPhone = ref(false)
 const orders = ref()
-
+const smsKey = import.meta.env.VITE_FAST_SMS_KEY
 const sendOtp = async() => {
   if(newphone.value.toString().length === 10){
     //generates six digit random nnumber
     otpv.value = Math.floor(100000 + Math.random() * 900000);
-
-    let res = await axios.get('https://www.fast2sms.com/dev/bulkV2?authorization=iE1fx6MVL0wYpWUto4sBuQk2bJdqjFK8Oy7GmDaTPrhAN93g5HWF3JCkDsAlOHRipSbwZqycTjMueUB0&&variables_values='+otpv.value+'&route=otp&numbers='+newphone.value)
+    
+    let res = await axios.get('https://www.fast2sms.com/dev/bulkV2?authorization='+smsKey+'&variables_values='+otpv.value+'&route=otp&numbers='+newphone.value)
     console.log(res)
     showOtpInput.value = true
   }

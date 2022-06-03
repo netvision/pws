@@ -6,7 +6,8 @@
         <input class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="product_id" id="flexRadioDefault1" :value="item.id" v-model="order.product_id">
         <label class="form-check-label inline-block text-gray-800" for="flexRadioDefault1">
           {{item.name}} <br />
-          {{item.description}}
+          {{item.description}}<br />
+          Rs. {{item.price}}
         </label>
       </div>
       
@@ -30,14 +31,14 @@
       </label>
       <input
         class="t-input w-full pr-4"
-        type="number"
+        type="text"
         id="phone"
         v-model="order.phone_no"
         placeholder="phone"
         @blur = "verifyNo" 
       />
     </div>
-    <div v-if="defaultPhone && order.phone_no != defaultPhone.phone_no" class="mt-4 text-black">
+    <div v-if="otpInput" class="mt-4 text-black">
       <label class="block text-sm font-bold mb-2 pt-4" for="otp">
         <span>OTP:</span>
       </label>
@@ -46,8 +47,12 @@
         type="number"
         id="otp"
         v-model="otpv"
-        placeholder="OTP" 
+        placeholder="OTP"
+        @blur = "otpVerify"
       />
+    </div>
+    <div v-if="otpVerified" class="bg-green-100 rounded-lg py-5 px-6 mb-4 text-base text-green-700" role="alert">
+      Phone no is verified!
     </div>
     <div class="mt-4 text-black form-group">
         <label class="block text-sm font-bold mb-2 pt-4" for="address">
@@ -102,7 +107,7 @@
       </div>
     </div>
     <div>
-    <button type="button"
+    <button type="button" :disabled="isDisabled"
         class="mt-4 t-btn w-full inline-flex items-center bg-primary text-white" @click="saveOrder">Book</button>
     </div>
   </section>
@@ -125,6 +130,10 @@ const pin = ref();
 const order = ref({});
 const otp = ref();
 const otpv = ref();
+const smsKey = import.meta.env.VITE_FAST_SMS_KEY
+const otpInput = ref(false)
+const otpVerified = ref(false)
+const isDisabled = ref(true)
 
 const verifyNo = async() => {
   if(order.value.phone_no.toString().length === 10){
@@ -133,13 +142,29 @@ const verifyNo = async() => {
     //generates six digit random nnumber
       otp.value = Math.floor(100000 + Math.random() * 900000);
 
-      let res = await axios.get('https://www.fast2sms.com/dev/bulkV2?authorization=iE1fx6MVL0wYpWUto4sBuQk2bJdqjFK8Oy7GmDaTPrhAN93g5HWF3JCkDsAlOHRipSbwZqycTjMueUB0&&variables_values='+otp.value+'&route=otp&numbers='+order.value.phone_no)
-      console.log(res)
+      let res = await axios.get('https://www.fast2sms.com/dev/bulkV2?authorization='+smsKey+'&variables_values='+otp.value+'&route=otp&numbers='+order.value.phone_no)
+      if(res){
+        alert('You will recieve OTP on this number. Please input that in the field below to verify mibile no.!')
+        otpInput.value = true
+      }
+      
     }
   }
   else {
     alert('please enter valid mobile no.!')
     order.value.phone_no = ''
+  }
+}
+
+const otpVerify = () => {
+  if(otp.value == otpv.value){
+    otpVerified.value = true
+    otpInput.value = false
+    isDisabled.value = false
+  }
+  else {
+    alert('Please enter correct OTP or change Mobile No.')
+    otpv.value = ''
   }
 }
 
@@ -163,7 +188,8 @@ const saveOrder = async() => {
   let date = new Date();
   order.value.ordered_at = date.toISOString().slice(0, 19).replace('T', ' ');
   order.value.requested_at = date.toISOString().slice(0, 19).replace('T', ' ');
-  order.value.user_uid = (user) ? user.value.uid : null;
+  order.value.user_uid = (user.value) ? user.value.uid : null;
+  order.value.phone_no = order.value.phone_no.toString()
   order.value.payment_type = 'cod';
   //console.log(order.value)
   let res = await axios.post('https://droplet.netserve.in/pws-orders', order.value).then(r => r.data);
@@ -188,6 +214,7 @@ onUpdated(async() => {
 })
 
 onMounted(async() => {
-  products.value = await axios.get('https://droplet.netserve.in/pws-products').then(r => r.data) 
+  products.value = await axios.get('https://droplet.netserve.in/pws-products').then(r => r.data)
+  order.value.product_id = 1
 })
 </script>
