@@ -133,12 +133,12 @@ const otpv = ref();
 const smsKey = import.meta.env.VITE_FAST_SMS_KEY
 const otpInput = ref(false)
 const otpVerified = ref(false)
-const isDisabled = ref(true)
+const isDisabled = ref(false)
 
 const verifyNo = async() => {
   if(order.value.phone_no.toString().length === 10){
     if(!defaultPhone.value || order.value.phone_no != defaultPhone.value.phone_no){
-    
+    isDisabled.value = true
     //generates six digit random nnumber
       otp.value = Math.floor(100000 + Math.random() * 900000);
 
@@ -193,10 +193,11 @@ const saveOrder = async() => {
   order.value.payment_type = 'cod';
   //console.log(order.value)
   let res = await axios.post('https://droplet.netserve.in/pws-orders', order.value).then(r => r.data);
+  console.log(res)
   if (res.id) {
     //send sms to the owner
-    let out = await axios.get('https://www.fast2sms.com/dev/bulkV2?authorization=iE1fx6MVL0wYpWUto4sBuQk2bJdqjFK8Oy7GmDaTPrhAN93g5HWF3JCkDsAlOHRipSbwZqycTjMueUB0&&variables_values=new order&route=otp&numbers=8949551146')
-    console.log(out)
+    let out = await axios.get('https://www.fast2sms.com/dev/bulkV2?authorization='+smsKey+'&variables_values=new order recieved&route=otp&numbers=8949551146')
+    router.replace('/payment/'+res.id)
   }
 }
 
