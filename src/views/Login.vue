@@ -60,14 +60,7 @@
           </router-link>
         </h5>
       </div>
-      <button
-        type="button"
-        @click="googleSignIn"
-        class="mt-4 t-btn w-full inline-flex items-center bg-primary text-white"
-      >
-        <font-awesome-icon :icon="['fab', 'google']" class="mr-2" />
-        Sign in with Google
-      </button>
+      
       <h5 class="mt-5 text-error">
         <router-link :to="{ name: 'ForgotPassword' }"
           >Forgot Password?
@@ -87,7 +80,6 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
-import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 import Loading from "@/components/Loading.vue";

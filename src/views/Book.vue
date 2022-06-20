@@ -196,7 +196,7 @@ const saveOrder = async() => {
   console.log(res)
   if (res.id) {
     //send sms to the owner
-    let out = await axios.get('https://www.fast2sms.com/dev/bulkV2?authorization='+smsKey+'&variables_values=new order recieved&route=otp&numbers=8949551146')
+    let out = await axios.get('https://www.fast2sms.com/dev/bulkV2?authorization='+smsKey+'&variables_values=new order recieved&route=otp&numbers=9414466704')
     router.replace('/payment/'+res.id)
   }
 }

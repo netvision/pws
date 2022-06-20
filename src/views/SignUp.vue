@@ -93,14 +93,7 @@
         </h5>
         
       </div>
-      <div><button
-        type="button"
-        @click="googleSignUp"
-        class="mt-4 t-btn w-full inline-flex items-center bg-primary text-white"
-      >
-        <font-awesome-icon :icon="['fab', 'google']" class="mr-2" />
-        Sign up with Google
-      </button></div>
+      
       <div v-if="error.length > 0" class="mt-4 p-4 bg-error rounded">
         {{ error }}
       </div>

@@ -42,7 +42,7 @@
     <h3 class="font-medium leading-tight text-3xl mt-3 mb-2 text-blue-600">Recent Orders</h3>
     <ul class="list-decimal ml-6 rounded-lg border border-gray-200 w-full text-gray-900">
       <li v-for="order in orders" :key="order.id" class="px-6 py-2 border-b border-gray-200 w-full">
-        {{order.requested_at}} <br /> {{order.address}}
+        {{order.requested_at}} <br /> {{order.address}} <br /> Current Status: {{(order.current_status == 'New') ? 'Confirmed' : order.current_status}}
       </li>
     </ul>
     </div>
