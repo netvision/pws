@@ -49,7 +49,7 @@ const routes = [
   },
 
   {
-    path: "/track/:id",
+    path: "/track",
     name: "TrackOrder",
     component: () => import("@/views/TrackOrder.vue"),
   },

@@ -1,10 +1,13 @@
 <template>
 <section class="p-4 bg-secondary w-full">
 <div class="text-primary">
+<p class="">{{moment(order?.ordered_at).format("ddd MMM DD, YYYY [at] HH:mm a")}}</p>
+<hr />
 <p>Hi, {{order?.name}}, <br />
-Your order is comfirmed. Please pay Rs. 500/- cash at the time of delivery!</p>
+Your order is comfirmed. Your order id is pws-{{order?.id}}.</p>
+<p>Please pay &#8377;{{order?.product.price}}/- cash at the time of delivery!</p>
 <p>You can track your order <router-link to="/track">here</router-link></p>
-<pre>{{moment(order?.ordered_at).format("ddd MMM DD, YYYY [at] HH:mm a")}}</pre>
+
 </div>
 </section>
 </template>
@@ -18,7 +21,7 @@ const route = useRoute()
 const id = route.params.id
 const order = ref()
 onMounted(async() => {
-    order.value = await axios.get('https://droplet.netserve.in/pws-orders/'+id).then(r => r.data)
+    order.value = await axios.get('https://droplet.netserve.in/pws-orders/'+id+'?expand=product').then(r => r.data)
     console.log(order.value)
 })
 </script>
